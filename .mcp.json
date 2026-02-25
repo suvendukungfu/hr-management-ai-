@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "pencil-design-server": {
+      "command": "npx",
+      "args": ["tsx", "/Users/suvendusahoo/hrmanagementproject/mcp-design-server/src/server.ts"],
+      "env": {}
+    }
+  }
+}
