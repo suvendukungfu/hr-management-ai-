@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "source": "Pencil Wireframes — AI HR God-Mode Mission Control",
+    "exportedAt": "2026-02-26T00:00:00Z",
+    "version": "1.0.0"
+  },
+  "theme": {
+    "colors": {
+      "bg": "#070B14",
+      "panel": "#0F172B",
+      "panelBorder": "#1F2E4B",
+      "sidebar": "#0C1222",
+      "text": "#EAF2FF",
+      "muted": "#8FA6C8",
+      "running": "#6FF3A3",
+      "waiting": "#FFC26E",
+      "idle": "#9AA6BC",
+      "ready": "#7FD7FF"
+    },
+    "layout": {
+      "sidebarWidth": 240,
+      "navbarHeight": 60,
+      "outerMargin": 24,
+      "gridGap": 16,
+      "gridColumns": 12,
+      "cardRadius": 12,
+      "cardPadding": 16
+    },
+    "typography": {
+      "fontFamily": "'Inter', system-ui, -apple-system, sans-serif",
+      "heading": { "fontSize": "28px", "fontWeight": "700" },
+      "subheading": { "fontSize": "1rem", "fontWeight": "600" },
+      "body": { "fontSize": "0.95rem", "fontWeight": "400" },
+      "small": { "fontSize": "0.85rem", "fontWeight": "400" }
+    },
+    "shadow": "0 6px 20px rgba(0,0,0,0.25)"
+  },
+  "components": {
+    "PlannerStatusCard": {
+      "description": "A status indicator card showing a label and live value. Used in the God Mode Dashboard header row.",
+      "type": "Card",
+      "gridSpan": 3,
+      "style": {
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "height": "100%"
+      },
+      "children": [
+        {
+          "type": "Text",
+          "role": "label",
+          "style": { "color": "theme.colors.muted", "fontSize": "theme.typography.small.fontSize", "marginBottom": "4px" }
+        },
+        {
+          "type": "Text",
+          "role": "value",
+          "style": { "fontSize": "1.2rem", "fontWeight": "600" },
+          "conditionalColor": {
+            "ACTIVE": "theme.colors.running",
+            "RUNNING": "theme.colors.running",
+            "ENABLED": "theme.colors.running",
+            "default": "theme.colors.text"
+          }
+        }
+      ]
+    },
+    "AgentControlPanel": {
+      "description": "A control panel with action buttons and agent state cards. Used on the /agent-control route.",
+      "type": "Page",
+      "title": "Agent Control Panel",
+      "sections": [
+        {
+          "type": "ButtonRow",
+          "gridSpan": 12,
+          "buttons": [
+            { "label": "Start Planner", "borderColor": "theme.colors.running", "action": "POST /planner/start" },
+            { "label": "Stop Planner", "borderColor": "#ef4444", "action": "POST /planner/stop" },
+            { "label": "Run Simulation", "borderColor": "theme.colors.ready", "action": "POST /simulation/run" },
+            { "label": "Trigger Recruiter Agent", "borderColor": "theme.colors.waiting", "action": "POST /agent/RecruiterAgent/trigger" }
+          ]
+        },
+        {
+          "type": "AgentCardGrid",
+          "gridSpan": 12,
+          "agents": ["RecruiterAgent", "SchedulerAgent", "AnalyticsAgent", "BiasDetectionAgent"],
+          "cardGridSpan": 3
+        },
+        {
+          "type": "LogPanel",
+          "gridSpan": 12,
+          "title": "Live Agent Logs",
+          "style": { "background": "theme.colors.bg", "fontFamily": "monospace", "fontSize": "0.9rem", "padding": "16px", "borderRadius": "8px" }
+        }
+      ]
+    },
+    "PlannerGraph": {
+      "description": "A visual workflow graph showing the hierarchical node execution plan. Used on the /planner-graph route.",
+      "type": "Page",
+      "title": "Planner Graph View",
+      "labels": {
+        "nodeStatus": "ACTIVE",
+        "edgePriority": "HIGH",
+        "confidence": "0.91"
+      },
+      "nodes": [
+        { "name": "Manager Planner", "status": "ACTIVE", "level": 0 },
+        { "name": "Recruiter Agent", "status": "RUNNING", "level": 1 },
+        { "name": "Analytics Agent", "status": "WAITING", "level": 1 },
+        { "name": "Bias Agent", "status": "IDLE", "level": 1 },
+        { "name": "Scheduler Agent", "status": "READY", "level": 2 }
+      ],
+      "edges": [
+        { "from": "Manager Planner", "to": "Recruiter Agent" },
+        { "from": "Manager Planner", "to": "Analytics Agent" },
+        { "from": "Manager Planner", "to": "Bias Agent" },
+        { "from": "Recruiter Agent", "to": "Scheduler Agent" }
+      ]
+    },
+    "SimulationPanel": {
+      "description": "A simulation results panel with prediction cards, risk meter, and reasoning log. Used on the /simulation route.",
+      "type": "Page",
+      "title": "Simulation Panel",
+      "sections": [
+        {
+          "type": "MetricCardRow",
+          "cards": [
+            { "label": "Predicted Hiring Success", "value": "87%", "color": "theme.colors.running", "gridSpan": 4 },
+            { "label": "Bias Risk", "value": "LOW", "color": "theme.colors.running", "gridSpan": 4 },
+            { "label": "Planner Recommendation", "value": "Schedule Interview", "color": "theme.colors.text", "gridSpan": 4 }
+          ]
+        },
+        {
+          "type": "RiskMeter",
+          "gridSpan": 12,
+          "fillPercent": 15,
+          "label": "15% Volatility"
+        },
+        {
+          "type": "SplitPanel",
+          "left": { "title": "Prediction Summary", "gridSpan": 6, "content": "ProgressBars" },
+          "right": { "title": "Planner Reasoning Log", "gridSpan": 6, "content": "ReasoningEntries" }
+        }
+      ]
+    },
+    "CandidateProfileCard": {
+      "description": "An AI-evaluated candidate profile with resume preview, skill tags, and planner insights. Used on /candidate-profile.",
+      "type": "Page",
+      "title": "AI Candidate Profile",
+      "layout": {
+        "left": {
+          "gridSpan": 8,
+          "content": "ResumePreview",
+          "candidateName": "Alex Mercer",
+          "role": "Senior Machine Learning Engineer"
+        },
+        "right": {
+          "gridSpan": 4,
+          "sections": [
+            {
+              "title": "Planner Insights",
+              "metrics": [
+                { "label": "AI Score", "value": "89", "color": "theme.colors.running" },
+                { "label": "Skill Match", "value": "High", "color": "theme.colors.text" },
+                { "label": "Bias Risk", "value": "Minimal", "color": "theme.colors.running" },
+                { "label": "Planner Decision", "value": "Strong Hire", "color": "theme.colors.ready", "highlighted": true }
+              ]
+            },
+            {
+              "title": "Skill Tags",
+              "tags": ["Python", "PyTorch", "LLMs", "React", "System Architecture", "TensorFlow"]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
