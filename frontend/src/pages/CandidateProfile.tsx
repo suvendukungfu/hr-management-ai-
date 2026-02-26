@@ -58,7 +58,7 @@ export default function CandidateProfile() {
 
         {/* ===== Sidebar Insights ===== */}
         <div className="animate-in animate-in-delay-2" style={{ gridColumn: "span 4", display: "flex", flexDirection: "column", gap: theme.layout.gridGap }}>
-          
+
           <Card>
             <h3 style={{ margin: "0 0 16px 0", color: theme.colors.muted, fontSize: "0.85rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Planner Insights
@@ -67,7 +67,7 @@ export default function CandidateProfile() {
               <InsightRow label="AI Score" value="89" color={theme.colors.running} />
               <InsightRow label="Skill Match" value="High" color={theme.colors.text} />
               <InsightRow label="Bias Risk" value="Minimal" color={theme.colors.running} />
-              
+
               <div style={{
                 background: `${theme.colors.ready}10`,
                 border: `1px solid ${theme.colors.ready}30`,

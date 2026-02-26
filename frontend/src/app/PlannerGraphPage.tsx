@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppLayout } from '../../components/Layout';
-import { PlannerGraph } from '../../components/mission-control/PlannerGraph';
+import { AppLayout } from '../components/Layout.js';
+import { PlannerGraph } from '../components/mission-control/PlannerGraph.js';
 
 export function PlannerGraphPage() {
   const nodes = [

@@ -16,7 +16,7 @@ import * as path from "path";
 
 const TOKENS_PATH = path.resolve(
   __dirname,
-  "../../design-tokens.json"
+  "../design-tokens.json"
 );
 
 const tokens: any = JSON.parse(fs.readFileSync(TOKENS_PATH, "utf8"));

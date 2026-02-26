@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { AppLayout } from '../../components/Layout';
-import { SimulationPanel } from '../../components/mission-control/SimulationPanel';
+import React from 'react';
+import { AppLayout } from '../components/Layout';
+import { SimulationPanel } from '../components/mission-control/SimulationPanel';
 
 export function SimulationPage() {
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppLayout } from '../../components/Layout';
-import { CandidateProfile } from '../../components/mission-control/CandidateProfile';
+import { AppLayout } from '../components/Layout.js';
+import { CandidateProfile } from '../components/mission-control/CandidateProfile.js';
 
 export function CandidateProfilePage() {
   const candidate = {

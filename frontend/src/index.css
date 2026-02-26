@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -32,6 +32,9 @@
   --spacing-outer: 24px;
   --spacing-grid: 16px;
 
+  --font-primary: 'JetBrains Mono', monospace;
+  --font-secondary: 'Geist', sans-serif;
+
   --animate-fade-in-up: fadeInUp 0.5s ease-out both;
   --animate-shimmer: shimmer 2s infinite linear;
   --animate-pulse-glow: pulseGlow 2s infinite ease-in-out;
@@ -52,7 +55,7 @@
   --ready: #7FD7FF;
   --danger: #FF6B8A;
   --accent-glow: rgba(111, 243, 163, 0.12);
-  --card-radius: 14px;
+  --card-radius: 16px; /* Sourced from Pencil */
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
   --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
   --shadow-glow: 0 0 20px rgba(111, 243, 163, 0.08);
@@ -65,7 +68,7 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-secondary);
   background-color: var(--bg);
   background-image:
     radial-gradient(ellipse at 10% 20%, rgba(111, 243, 163, 0.04) 0%, transparent 50%),

@@ -26,7 +26,7 @@ export default function ReflectionEngine() {
           <MetricCard label="Decision Confidence" value={(memory.confidenceIndex / 100).toFixed(2)} color={theme.colors.ready} icon="🎯" />
         </div>
         <div className="animate-in animate-in-delay-3" style={{ gridColumn: "span 3" }}>
-          <MetricCard label="Reflections Logged" value={memory.reflectionLogs.length.toString()} color={theme.colors.text} icon="📚" />
+          <MetricCard label="Reflections Logged" value={(memory.reflectionLogs?.length || 0).toString()} color={theme.colors.text} icon="📚" />
         </div>
         <div className="animate-in animate-in-delay-4" style={{ gridColumn: "span 3" }}>
           <button className="btn btn-outline" style={{ width: '100%', marginBottom: 8, borderColor: theme.colors.running, color: theme.colors.running }} onClick={handleGoodReflection}>+ Good Reflection</button>
@@ -41,7 +41,7 @@ export default function ReflectionEngine() {
             </h3>
             {/* SVG mini-chart */}
             <div style={{ background: theme.colors.bg, borderRadius: 10, height: "calc(100% - 40px)", display: "flex", alignItems: "flex-end", padding: "20px 24px", gap: 4 }}>
-              {memory.confidenceHistory.map((v: number, i: number) => (
+              {(memory.confidenceHistory || []).map((v: number, i: number) => (
                 <div key={i} style={{
                   flex: 1,
                   height: `${v}%`,
@@ -61,13 +61,16 @@ export default function ReflectionEngine() {
         </div>
 
         {/* ===== Reasoning Log ===== */}
+        <div className="animate-in animate-in-delay-3" style={{ gridColumn: "span 3" }}>
+          <MetricCard label="Reflections Logged" value={(memory.reflectionLogs?.length || 0).toString()} color={theme.colors.text} icon="📚" />
+        </div>
         <div className="animate-in animate-in-delay-4" style={{ gridColumn: "span 4" }}>
           <Card style={{ height: 400 }}>
             <h3 style={{ margin: "0 0 16px 0", color: theme.colors.muted, fontSize: "0.9rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Reasoning Log
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", maxHeight: 320 }}>
-              {memory.reflectionLogs.length > 0 ? memory.reflectionLogs.map((r: any, i: number) => (
+              {(memory.reflectionLogs?.length || 0) > 0 ? (memory.reflectionLogs || []).map((r: any, i: number) => (
                 <div key={i} className="animate-in" style={{
                   background: theme.colors.bg,
                   padding: 14,

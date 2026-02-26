@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppLayout } from '../../components/Layout';
-import { ReflectionDashboard } from '../../components/mission-control/ReflectionDashboard';
+import { AppLayout } from '../components/Layout.js';
+import { ReflectionDashboard } from '../components/mission-control/ReflectionDashboard.js';
 
 export function ReflectionPage() {
   const logs = [

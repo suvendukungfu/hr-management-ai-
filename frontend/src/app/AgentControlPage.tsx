@@ -1,7 +1,6 @@
 import React from 'react';
-import { AppLayout } from '../../components/Layout';
-import { AgentControlPanel } from '../../components/mission-control/AgentControlPanel';
-import { useAntigravityState } from '../../hooks/useAntigravityState';
+import { AppLayout } from '../components/Layout';
+import { AgentControlPanel } from '../components/mission-control/AgentControlPanel';
 
 export function AgentControlPage() {
   return (

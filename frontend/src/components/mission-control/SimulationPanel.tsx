@@ -1,66 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "../../lib/utils.js";
 import { useAntigravityState } from "../../hooks/useAntigravityState.js";
+import { Card } from "../Layout.js";
+import { theme } from "../../theme.js";
 
 interface SimulationPanelProps {
   className?: string;
 }
 
 export function SimulationPanel({ className }: SimulationPanelProps) {
-  const { triggerApi, simResults } = useAntigravityState();
+  const { triggerApi, simResults, systemState } = useAntigravityState();
   const [isRunning, setIsRunning] = useState(false);
 
+  useEffect(() => {
+    if (systemState?.status === "SIMULATING") setIsRunning(true);
+    else if (systemState?.status === "ACTIVE" || systemState?.status === "IDLE") setIsRunning(false);
+  }, [systemState?.status]);
+
+  const progress = systemState?.simulation_progress || (isRunning ? 45 : 0);
+
   const metrics = simResults ? [
-    { id: "m1", name: "Candidates", value: simResults.total_processed || "0", unit: "total" },
-    { id: "m2", name: "Match Rate", value: simResults.avg_match_rate || "0", unit: "%" },
-    { id: "m3", name: "Time to Hire", value: "12", unit: "days" },
-    { id: "m4", name: "Bias Alert", value: simResults.bias_incidents || "0", unit: "incidents" },
+    { id: "m1", name: "CANDIDATES", value: simResults.total_processed || "0", unit: "TOTAL" },
+    { id: "m2", name: "MATCH RATE", value: simResults.avg_match_rate || "0", unit: "%" },
+    { id: "m3", name: "TIME TO HIRE", value: "12", unit: "DAYS" },
+    { id: "m4", name: "BIAS ALERT", value: simResults.bias_incidents || "0", unit: "INCIDENTS" },
   ] : [
-    { id: "m1", name: "Candidates", value: "1,204", unit: "total" },
-    { id: "m2", name: "Match Rate", value: "94.2", unit: "%" },
-    { id: "m3", name: "Time to Hire", value: "12", unit: "days" },
-    { id: "m4", name: "Bias Alert", value: "0", unit: "incidents" },
+    { id: "m1", name: "CANDIDATES", value: "1,204", unit: "TOTAL" },
+    { id: "m2", name: "MATCH RATE", value: "94.2", unit: "%" },
+    { id: "m3", name: "TIME TO HIRE", value: "12", unit: "DAYS" },
+    { id: "m4", name: "BIAS ALERT", value: "0", unit: "INCIDENTS" },
   ];
 
   const handleToggle = () => {
-    setIsRunning(!isRunning);
-    triggerApi('/simulation/run');
+    const nextState = !isRunning;
+    setIsRunning(nextState);
+    if (nextState) {
+      triggerApi('/simulation/run', { goal: systemState?.current_goal || "UI Simulation Trigger" });
+    } else {
+      triggerApi('/simulation/stop');
+    }
   };
 
   return (
-    <div className={cn("bg-card text-card-foreground rounded-lg p-6 border border-border card-hover", className)}>
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-semibold text-lg">Simulation Engine</h3>
+    <Card className={cn("flex flex-col gap-6", className)} padding={24}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h3 style={{ fontFamily: "var(--font-secondary)", fontSize: 18, fontWeight: 600, margin: 0, color: theme.colors.text }}>
+          SYSTEM SIMULATION
+        </h3>
         <button 
           onClick={handleToggle}
-          className={cn(
-            "btn",
-            isRunning ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
-          )}
+          style={{ 
+            background: isRunning ? "transparent" : theme.colors.running, 
+            color: isRunning ? theme.colors.danger : theme.colors.bg,
+            border: isRunning ? `1px solid ${theme.colors.danger}` : "none",
+            fontFamily: "var(--font-primary)", fontSize: 9, fontWeight: 700, padding: "8px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 
+          }}
         >
-          {isRunning ? "■ Halt Simulation" : "▶ Start Simulation"}
+          {isRunning ? "■ HALT SIMULATION" : "▶ START SIMULATION"}
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
         {metrics.map((m) => (
-          <div key={m.id} className="p-4 rounded-md border border-border bg-background/50">
-            <p className="text-sm text-muted-foreground mb-1">{m.name}</p>
-            <div className="flex items-baseline gap-1">
-              <p className="text-2xl font-semibold text-foreground">{m.value}</p>
-              <span className="text-sm text-muted-foreground">{m.unit}</span>
+          <div key={m.id} style={{ display: "flex", flexDirection: "column", gap: 8, padding: "16px", background: theme.colors.sidebar, border: `1px solid ${theme.colors.panelBorder}` }}>
+            <span style={{ fontFamily: "var(--font-primary)", fontSize: 9, fontWeight: 600, color: theme.colors.muted, letterSpacing: 0.5 }}>
+              // {m.name}
+            </span>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+              <span style={{ fontFamily: "var(--font-secondary)", fontSize: 24, fontWeight: 700, color: theme.colors.text }}>
+                {m.value}
+              </span>
+              <span style={{ fontFamily: "var(--font-primary)", fontSize: 10, color: theme.colors.muted }}>
+                {m.unit}
+              </span>
             </div>
           </div>
         ))}
       </div>
       
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontFamily: "var(--font-primary)", fontSize: 9, fontWeight: 600, color: theme.colors.muted, letterSpacing: 0.5 }}>// PROGRESS</span>
+          <span style={{ fontFamily: "var(--font-primary)", fontSize: 10, fontWeight: 600, color: isRunning ? theme.colors.running : theme.colors.text }}>{progress}%</span>
+        </div>
+        <div style={{ width: "100%", height: 2, background: theme.colors.sidebar, position: "relative" }}>
+          <div 
+            style={{ 
+              position: "absolute", left: 0, top: 0, bottom: 0, 
+              width: `${progress}%`, background: isRunning ? theme.colors.running : theme.colors.muted,
+              boxShadow: isRunning ? `0 0 10px ${theme.colors.running}80` : "none",
+              transition: "width 0.5s ease"
+            }} 
+          />
+        </div>
+      </div>
+
       {isRunning && (
-        <div className="mt-6 p-4 rounded-md bg-info/10 border border-info/20 animate-fade-in-up">
-          <p className="text-sm text-info font-medium flex items-center gap-2">
-            <span className="live-dot running" /> Simulation parameters are active and tracking live.
-          </p>
+        <div style={{ 
+          marginTop: 8, padding: "12px 16px", background: `${theme.colors.running}10`, border: `1px solid ${theme.colors.running}40`,
+          fontFamily: "var(--font-primary)", fontSize: 11, color: theme.colors.running, display: "flex", alignItems: "center", gap: 12
+        }} className="animate-fade-in-up">
+          <span style={{ width: 6, height: 6, background: theme.colors.running, boxShadow: `0 0 8px ${theme.colors.running}80` }} className="animate-pulse-glow" />
+          SIMULATION_PARAMETERS_ACTIVE
         </div>
       )}
-    </div>
+    </Card>
   );
 }

@@ -39,7 +39,7 @@ export default function GodModeDashboard() {
         {/* ===== Status Cards ===== */}
         {statuses.map((s, i) => (
           <div key={i} className={`animate-in animate-in-delay-${i + 1}`} style={{ gridColumn: "span 3" }}>
-            <MetricCard label={s.label} value={s.value} color={statusColor(s.value)} icon={s.icon} />
+            <MetricCard label={s.label} value={String(s.value || "")} color={statusColor(String(s.value || ""))} icon={s.icon} />
           </div>
         ))}
 

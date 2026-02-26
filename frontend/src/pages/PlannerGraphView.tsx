@@ -8,7 +8,7 @@ import { useAntigravityState } from "../hooks/useAntigravityState.js";
 
 export default function PlannerGraphView() {
   const { evolvingGraph, memory } = useAntigravityState();
-  const nodes = evolvingGraph.nodes;
+  const nodes = Array.isArray(evolvingGraph) ? evolvingGraph : (evolvingGraph as any).nodes || [];
 
   return (
     <AppLayout title="Planner Graph View" subtitle="Visual task execution graph with node dependencies">
@@ -17,7 +17,7 @@ export default function PlannerGraphView() {
         {/* ===== Labels Bar ===== */}
         <div className="animate-in" style={{ gridColumn: "span 12" }}>
           <Card style={{ display: "flex", gap: 32, padding: "14px 24px" }}>
-            <LabelChip label="Planner Strategy" value={memory.strategy} color={theme.colors.text} />
+            <LabelChip label="Planner Strategy" value={memory.strategy || "N/A"} color={theme.colors.text} />
             <LabelChip label="System Risk" value={memory.riskLevel} color={memory.riskLevel === 'LOW' ? theme.colors.running : theme.colors.waiting} />
             <LabelChip label="Confidence" value={(memory.confidenceIndex / 100).toFixed(2)} color={theme.colors.ready} />
             <div style={{ flex: 1 }} />
@@ -30,10 +30,10 @@ export default function PlannerGraphView() {
         {/* ===== Graph Visualization ===== */}
         <div className="animate-in animate-in-delay-2" style={{ gridColumn: "span 12" }}>
           <Card style={{ minHeight: "55vh", display: "flex", flexDirection: "column", gap: 48, padding: "40px 60px", alignItems: "center", justifyContent: "center" }}>
-            
+
             {/* Level 0: Manager */}
             {nodes.filter((n: any) => n.level === 0).map((n: any) => <GraphNode key={n.id} {...n} />)}
-            
+
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
               <div style={{ width: 2, height: 24, background: `linear-gradient(to bottom, ${theme.colors.running}, ${theme.colors.panelBorder})` }} />
               <span style={{ fontSize: "0.7rem", color: theme.colors.idle }}>dispatches</span>
@@ -82,7 +82,7 @@ function GraphNode({ name, status, isInjected }: { name: string; status: string;
   const color = statusColor(status);
   const isActive = status === "ACTIVE" || status === "RUNNING";
   const borderColor = isInjected ? theme.colors.danger : (isActive ? color : theme.colors.panelBorder);
-  
+
   return (
     <div className={isInjected ? "animate-in" : ""} style={{
       background: theme.colors.bg,

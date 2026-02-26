@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { cn } from "../../lib/utils.js";
 import { useAntigravityState } from "../../hooks/useAntigravityState.js";
+import { Card } from "../Layout.js";
+import { theme } from "../../theme.js";
 
 interface EventTimelineProps {
   className?: string;
@@ -8,37 +10,79 @@ interface EventTimelineProps {
 
 export function EventTimeline({ className }: EventTimelineProps) {
   const { events } = useAntigravityState();
+  const scrollRef = useRef<HTMLDivElement>(null);
   
-  const timelineMapped = events.length > 0 ? events.slice(0, 5).map((e: any, idx: number) => ({
-    id: `ev-${idx}-${e.timestamp || Date.now()}`,
-    topic: e.topic,
-    data: typeof e.data === 'string' ? e.data : JSON.stringify(e.data),
-    timestamp: new Date().toLocaleTimeString()
-  })) : [
-    { id: "e1", topic: "system:boot", data: "Mission Control Online", timestamp: "09:00 AM" },
-    { id: "e2", topic: "agent:spawn", data: "Recruiter Agent deployed", timestamp: "09:02 AM" },
-    { id: "e3", topic: "planner:route", data: "Goal updated: Senior Eng", timestamp: "09:05 AM" }
+  const timelineMapped = events.length > 0 ? events.map((e: any, idx: number) => {
+    const category = e.topic.startsWith('planner') ? 'planner' :
+                     e.topic.startsWith('agent') ? 'agent' :
+                     e.topic.startsWith('simulation') ? 'simulation' : 'system';
+
+    return {
+      id: `ev-${idx}-${e.timestamp || Date.now()}`,
+      topic: e.topic.toUpperCase(),
+      category,
+      data: typeof e.data === 'string' ? e.data : JSON.stringify(e.data),
+      timestamp: new Date(e.timestamp || Date.now()).toLocaleTimeString()
+    };
+  }) : [
+    { id: "e1", topic: "SYSTEM:BOOT", category: "system", data: "Mission Control Online", timestamp: "09:00 AM" },
+    { id: "e2", topic: "AGENT:SPAWN", category: "agent", data: "Recruiter Agent deployed", timestamp: "09:02 AM" },
+    { id: "e3", topic: "PLANNER:ROUTE", category: "planner", data: "Goal updated: Senior Eng", timestamp: "09:05 AM" }
   ];
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [timelineMapped.length]);
+
   return (
-    <div className={cn("bg-card text-card-foreground rounded-lg p-6 border border-border card-hover", className)}>
-      <h3 className="font-semibold mb-4 text-muted-foreground uppercase tracking-wide text-sm">
-        Live Event Timeline
-      </h3>
-      <div className="relative border-l border-border ml-3 pl-4 space-y-6">
-        {timelineMapped.map((event: any, i: number) => (
-          <div key={event.id} className="relative animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
-            <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-primary border-2 border-background animate-pulse-glow" />
-            <div className="bg-background/50 rounded-md p-3 border border-border hover:bg-background/80 transition-colors">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs font-mono font-bold text-primary">{event.topic}</span>
-                <span className="text-xs text-muted-foreground">{event.timestamp}</span>
-              </div>
-              <p className="text-sm text-foreground">{event.data}</p>
-            </div>
-          </div>
-        ))}
+    <Card className={cn("flex flex-col gap-6", className)} padding={24}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h3 style={{ fontFamily: "var(--font-secondary)", fontSize: 18, fontWeight: 600, margin: 0, color: theme.colors.text }}>
+          EVENT STREAM LOGS
+        </h3>
+        <span style={{ fontFamily: "var(--font-primary)", fontSize: 9, fontWeight: 600, color: theme.colors.muted, letterSpacing: 1 }}>
+          // LIVE_FEED
+        </span>
       </div>
-    </div>
+      
+      <div 
+        ref={scrollRef}
+        style={{ position: "relative", marginLeft: 8, paddingLeft: 16, borderLeft: `1px dashed ${theme.colors.panelBorder}`, display: "flex", flexDirection: "column", gap: 24, flex: 1, overflowY: "auto", paddingBottom: 24 }}
+        className="custom-scrollbar"
+      >
+        {timelineMapped.map((event: any, i: number) => {
+          const dotColor = event.category === 'planner' ? theme.colors.running :
+                           event.category === 'agent' ? theme.colors.ready :
+                           event.category === 'simulation' ? theme.colors.waiting : theme.colors.muted;
+          
+          return (
+            <div key={event.id} style={{ position: "relative" }} className="animate-fade-in-up">
+              <span style={{ 
+                position: "absolute", left: -20, top: 4, width: 7, height: 7, 
+                background: dotColor, boxShadow: `0 0 8px ${dotColor}80` 
+              }} />
+              
+              <div style={{ 
+                background: theme.colors.sidebar, border: `1px solid ${theme.colors.panelBorder}`, padding: 12, display: "flex", flexDirection: "column", gap: 6 
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontFamily: "var(--font-primary)", fontSize: 10, fontWeight: 700, color: dotColor, letterSpacing: 0.5 }}>
+                    [{event.topic}]
+                  </span>
+                  <span style={{ fontFamily: "var(--font-primary)", fontSize: 9, color: theme.colors.muted }}>
+                    {event.timestamp}
+                  </span>
+                </div>
+                <p style={{ fontFamily: "var(--font-primary)", fontSize: 11, margin: 0, color: theme.colors.text, lineHeight: 1.5, wordWrap: "break-word" }}>
+                  {event.data}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
   );
 }

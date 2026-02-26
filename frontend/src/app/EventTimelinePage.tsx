@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppLayout } from '../../components/Layout';
-import { EventTimeline } from '../../components/mission-control/EventTimeline';
+import { AppLayout } from '../components/Layout';
+import { EventTimeline } from '../components/mission-control/EventTimeline';
 
 export function EventTimelinePage() {
   return (

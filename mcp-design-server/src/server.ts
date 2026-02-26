@@ -12,7 +12,7 @@ import * as path from "path";
 // ---------- Load Pencil design tokens ----------
 const TOKENS_PATH = path.resolve(
   __dirname,
-  "../../design-tokens.json"
+  "../design-tokens.json"
 );
 const designTokens: any = JSON.parse(fs.readFileSync(TOKENS_PATH, "utf8"));
 

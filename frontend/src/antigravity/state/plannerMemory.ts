@@ -9,10 +9,16 @@ export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 export interface PlannerMemoryState {
   confidenceIndex: number;
-  confidenceHistory: number[];
+  confidenceHistory?: number[];
   riskLevel: RiskLevel;
-  reflectionLogs: ReflectionFeedback[];
-  strategy: string;
+  reflectionLogs?: ReflectionFeedback[];
+  strategy?: string;
+  goal?: string;
+  status?: string;
+  startTime?: number | null;
+  activeAgents?: string[];
+  memoryRefs?: string[];
+  recentFeedback?: any[];
 }
 
 type Listener = (state: PlannerMemoryState) => void;
@@ -46,14 +52,14 @@ class PlannerMemory {
 
   updateConfidence(score: number) {
     this.state.confidenceIndex = score;
-    this.state.confidenceHistory = [...this.state.confidenceHistory, score].slice(-20); // Keep last 20
+    this.state.confidenceHistory = [...(this.state.confidenceHistory || []), score].slice(-20); // Keep last 20
     this.notify();
   }
 
   addReflectionFeedback(feedback: Omit<ReflectionFeedback, 'timestamp'>) {
     this.state.reflectionLogs = [
       { ...feedback, timestamp: Date.now() },
-      ...this.state.reflectionLogs,
+      ...(this.state.reflectionLogs || []),
     ].slice(0, 50); // Keep last 50
     this.notify();
   }
