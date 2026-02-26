@@ -1,11 +1,10 @@
 import React from "react";
-import React from "react";
-import { AppLayout, Card } from "../components/Layout";
-import { theme, statusColor } from "../theme";
+import { AppLayout, Card } from "../components/Layout.js";
+import { theme, statusColor } from "../theme.js";
 
 // No hardcoded nodes
 
-import { useAntigravityState } from "../hooks/useAntigravityState";
+import { useAntigravityState } from "../hooks/useAntigravityState.js";
 
 export default function PlannerGraphView() {
   const { evolvingGraph, memory } = useAntigravityState();
@@ -33,7 +32,7 @@ export default function PlannerGraphView() {
           <Card style={{ minHeight: "55vh", display: "flex", flexDirection: "column", gap: 48, padding: "40px 60px", alignItems: "center", justifyContent: "center" }}>
             
             {/* Level 0: Manager */}
-            {nodes.filter(n => n.level === 0).map(n => <GraphNode key={n.id} {...n} />)}
+            {nodes.filter((n: any) => n.level === 0).map((n: any) => <GraphNode key={n.id} {...n} />)}
             
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
               <div style={{ width: 2, height: 24, background: `linear-gradient(to bottom, ${theme.colors.running}, ${theme.colors.panelBorder})` }} />
@@ -43,7 +42,7 @@ export default function PlannerGraphView() {
 
             {/* Level 1: Workers / Guards */}
             <div style={{ display: "flex", gap: 48, width: "100%", justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-              {nodes.filter((n) => n.level === 1).map((n, i) => (
+              {nodes.filter((n: any) => n.level === 1).map((n: any, i: number) => (
                 <React.Fragment key={n.id}>
                   {i > 0 && n.isInjected && (
                      <div className="animate-in" style={{ display: "flex", alignItems: "center" }}>
@@ -71,7 +70,7 @@ export default function PlannerGraphView() {
             </div>
 
             {/* Level 2: Scheduler */}
-            {nodes.filter(n => n.level === 2).map(n => <GraphNode key={n.id} {...n} />)}
+            {nodes.filter((n: any) => n.level === 2).map((n: any) => <GraphNode key={n.id} {...n} />)}
           </Card>
         </div>
       </div>

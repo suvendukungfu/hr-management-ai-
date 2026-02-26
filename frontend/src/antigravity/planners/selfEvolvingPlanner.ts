@@ -1,4 +1,4 @@
-import { plannerMemoryStore, RiskLevel, PlannerMemoryState } from "../state/plannerMemory.js";
+import { plannerMemoryStore, type RiskLevel, type PlannerMemoryState } from "../state/plannerMemory.js";
 
 export interface PlannerNode {
   id: string;

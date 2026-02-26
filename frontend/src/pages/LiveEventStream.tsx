@@ -1,6 +1,6 @@
 import React from "react";
-import { AppLayout, Card } from "../components/Layout";
-import { theme } from "../theme";
+import { AppLayout, Card } from "../components/Layout.js";
+import { theme } from "../theme.js";
 
 const mockEvents = [
   { time: "12:01", msg: "Planner Generated Task Graph", type: "system" as const },
@@ -51,13 +51,13 @@ export default function LiveEventStream() {
                       background: theme.colors.bg,
                       padding: "16px 20px",
                       borderRadius: 10,
-                      borderLeft: `4px solid ${style.color}`,
+                      borderLeft: `4px solid ${style?.color || theme.colors.text}`,
                       transition: "background 0.2s",
                     }}
                   >
-                    <span style={{ fontSize: "1.1rem" }}>{style.icon}</span>
+                    <span style={{ fontSize: "1.1rem" }}>{style?.icon || "•"}</span>
                     <span style={{
-                      color: style.color,
+                      color: style?.color || theme.colors.text,
                       fontWeight: 700,
                       fontSize: "0.85rem",
                       minWidth: 55,
@@ -71,8 +71,8 @@ export default function LiveEventStream() {
                     <span style={{
                       fontSize: "0.68rem",
                       fontWeight: 600,
-                      color: style.color,
-                      background: `${style.color}15`,
+                      color: style?.color || theme.colors.text,
+                      background: `${style?.color || theme.colors.text}15`,
                       padding: "3px 10px",
                       borderRadius: 6,
                       textTransform: "uppercase",

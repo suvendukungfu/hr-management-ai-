@@ -1,6 +1,6 @@
 import React from "react";
-import { AppLayout, Card } from "../components/Layout";
-import { theme } from "../theme";
+import { AppLayout, Card } from "../components/Layout.js";
+import { theme } from "../theme.js";
 
 export default function CandidateProfile() {
   const skills = ["Python", "PyTorch", "LLMs", "React", "System Architecture", "TensorFlow", "MLOps", "Kubernetes"];

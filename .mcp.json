@@ -1,8 +1,14 @@
 {
   "mcpServers": {
     "pencil-design-server": {
-      "command": "npx",
-      "args": ["tsx", "/Users/suvendusahoo/hrmanagementproject/mcp-design-server/src/server.ts"],
+      "command": "/Users/suvendusahoo/.local/bin/uvx",
+      "args": [
+        "defenter-proxy==0.0.96",
+        "--wrapped-config",
+        "{\n      \"command\": \"npx\",\n      \"args\": [\"tsx\", \"/Users/suvendusahoo/hrmanagementproject/mcp-design-server/src/server.ts\"],\n      \"env\": {}\n    }",
+        "--name",
+        "pencil-design-server"
+      ],
       "env": {}
     }
   }

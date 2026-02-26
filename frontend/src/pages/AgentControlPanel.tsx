@@ -1,8 +1,8 @@
 import React from "react";
-import { AppLayout, Card } from "../components/Layout";
-import { StatusDot } from "../components/StatusDot";
-import { theme, statusColor } from "../theme";
-import { useMissionControl } from "../hooks/useMissionControl";
+import { AppLayout, Card } from "../components/Layout.js";
+import { StatusDot } from "../components/StatusDot.js";
+import { theme, statusColor } from "../theme.js";
+import { useMissionControl } from "../hooks/useMissionControl.js";
 
 export default function AgentControlPanel() {
   const { triggerApi, systemState } = useMissionControl();

@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { theme } from "../theme";
+import { theme } from "../theme.js";
 
 interface AppLayoutProps {
   title: string;

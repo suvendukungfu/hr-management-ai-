@@ -1,5 +1,5 @@
 import React from "react";
-import { statusColor } from "../theme";
+import { statusColor } from "../theme.js";
 
 interface StatusDotProps {
   state: string;

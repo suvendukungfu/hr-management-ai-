@@ -1,7 +1,7 @@
 import React from "react";
-import { AppLayout, Card, MetricCard } from "../components/Layout";
-import { theme } from "../theme";
-import { useAntigravityState } from "../hooks/useAntigravityState";
+import { AppLayout, Card, MetricCard } from "../components/Layout.js";
+import { theme } from "../theme.js";
+import { useAntigravityState } from "../hooks/useAntigravityState.js";
 
 export default function ReflectionEngine() {
   const { memory, addReflection } = useAntigravityState();
@@ -41,7 +41,7 @@ export default function ReflectionEngine() {
             </h3>
             {/* SVG mini-chart */}
             <div style={{ background: theme.colors.bg, borderRadius: 10, height: "calc(100% - 40px)", display: "flex", alignItems: "flex-end", padding: "20px 24px", gap: 4 }}>
-              {memory.confidenceHistory.map((v, i) => (
+              {memory.confidenceHistory.map((v: number, i: number) => (
                 <div key={i} style={{
                   flex: 1,
                   height: `${v}%`,
@@ -67,7 +67,7 @@ export default function ReflectionEngine() {
               Reasoning Log
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", maxHeight: 320 }}>
-              {memory.reflectionLogs.length > 0 ? memory.reflectionLogs.map((r, i) => (
+              {memory.reflectionLogs.length > 0 ? memory.reflectionLogs.map((r: any, i: number) => (
                 <div key={i} className="animate-in" style={{
                   background: theme.colors.bg,
                   padding: 14,

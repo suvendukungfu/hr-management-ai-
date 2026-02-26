@@ -4,11 +4,11 @@ const API_BASE = 'http://localhost:8000';
 const WS_URL = 'ws://localhost:8000/ws/events';
 
 export function useMissionControl() {
-  const [systemState, setSystemState] = useState(null);
-  const [events, setEvents] = useState([]);
-  const [simResults, setSimResults] = useState(null);
+  const [systemState, setSystemState] = useState<any>(null);
+  const [events, setEvents] = useState<any[]>([]);
+  const [simResults, setSimResults] = useState<any>(null);
   
-  const wsRef = useRef(null);
+  const wsRef = useRef<WebSocket | null>(null);
 
   const fetchState = async () => {
     try {
@@ -30,7 +30,7 @@ export function useMissionControl() {
     const connectWs = () => {
       wsRef.current = new WebSocket(WS_URL);
       
-      wsRef.current.onmessage = (event) => {
+      wsRef.current.onmessage = (event: MessageEvent) => {
         const evData = JSON.parse(event.data);
         setEvents(prev => [...prev, evData]);
         
@@ -56,8 +56,8 @@ export function useMissionControl() {
     };
   }, []);
 
-  const triggerApi = async (path, body = null) => {
-    const opts = { method: 'POST' };
+  const triggerApi = async (path: string, body: any = null) => {
+    const opts: RequestInit = { method: 'POST' };
     if (body) {
       opts.headers = { 'Content-Type': 'application/json' };
       opts.body = JSON.stringify(body);

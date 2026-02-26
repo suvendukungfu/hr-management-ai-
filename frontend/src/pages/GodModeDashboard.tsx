@@ -1,8 +1,8 @@
 import React from "react";
-import { AppLayout, Card, MetricCard } from "../components/Layout";
-import { StatusDot } from "../components/StatusDot";
-import { useAntigravityState } from "../hooks/useAntigravityState";
-import { theme, statusColor } from "../theme";
+import { AppLayout, Card, MetricCard } from "../components/Layout.js";
+import { StatusDot } from "../components/StatusDot.js";
+import { useAntigravityState } from "../hooks/useAntigravityState.js";
+import { theme, statusColor } from "../theme.js";
 
 export default function GodModeDashboard() {
   const { systemState, events, triggerApi, memory } = useAntigravityState();

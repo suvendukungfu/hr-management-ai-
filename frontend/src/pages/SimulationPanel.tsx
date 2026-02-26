@@ -61,7 +61,7 @@ export default function SimulationPanel() {
               Node-Level Forecasts
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              {(simResults?.results ? Object.entries(simResults.results) : mockForecasts.map(f => [f.name, { predicted_success: f.prob }])).map(([node, data]) => {
+              {(simResults?.results ? Object.entries(simResults.results as Record<string, any>) : mockForecasts.map(f => [f.name, { predicted_success: f.prob }])).map(([node, data]) => {
                 const prob = (data as any).predicted_success || (data as any).prob || 0;
                 const clr = prob > 0.85 ? theme.colors.running : prob > 0.7 ? theme.colors.waiting : theme.colors.danger;
                 return (

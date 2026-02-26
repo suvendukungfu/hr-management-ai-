@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useMissionControl } from "./useMissionControl";
-import { plannerMemoryStore, PlannerMemoryState } from "../antigravity/state/plannerMemory";
-import { selfEvolvingPlanner, PlannerGraph } from "../antigravity/planners/selfEvolvingPlanner";
+import { useMissionControl } from "./useMissionControl.js";
+import { plannerMemoryStore, type PlannerMemoryState } from "../antigravity/state/plannerMemory.js";
+import { selfEvolvingPlanner, type PlannerGraph } from "../antigravity/planners/selfEvolvingPlanner.js";
 
 export function useAntigravityState() {
   // Inherit standard API bindings
